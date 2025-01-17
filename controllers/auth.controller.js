@@ -33,10 +33,12 @@ export const signIn = async (req, res) => {
         const { email, password } = req.body;
 
         let user = await User.findOne({ email });
+
         if (!user)
             return res.status(403).json({ error: "No existe este usuario" });
 
         const respuestaPassword = await user.comparePassword(password);
+
         if (!respuestaPassword)
             return res.status(403).json({ error: "Contraseña incorrecta" });
 
@@ -51,7 +53,7 @@ export const signIn = async (req, res) => {
     }
 }
 
-export const signOut = (req, res) => {
+export const signOut = (_, res) => {
     res.clearCookie(KV_REFRESH_TOKEN);
     res.json({ ok: true });
 };

@@ -26,11 +26,13 @@ export const authorization = (req, res, next) => {
 export const requireRefreshToken = (req, res, next) => {
     try {
         const cookieToken = req.cookies[KV_REFRESH_TOKEN];
+
         if (!cookieToken) throw new Error("No existe el token");
 
         const { uid } = jwt.verify(cookieToken, JWT_REFRESH);
 
         req.uid = uid;
+        
         next();
     } catch (error) {
         console.log(error);
